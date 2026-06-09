@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prode-api
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: prode
+      DB_USER: prode
+      DB_PASSWORD: prode123
+
+  postgres:
+    image: postgres:17
+    container_name: prode-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: prode
+      POSTGRES_USER: prode
+      POSTGRES_PASSWORD: prode123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
